@@ -72,4 +72,12 @@ public class OrderService {
         String mm = Integer.toString(last%60);
         return hh + ":" + mm;
     }
+
+    public boolean deletePartnerById(String partnerId) {
+        return orderRepository.deletePartnerById(partnerId);
+    }
+
+    public boolean deleteOrderById(String orderId) {
+        return orderRepository.deleteOrderById(orderId);
+    }
 }

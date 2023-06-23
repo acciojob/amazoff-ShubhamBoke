@@ -64,4 +64,34 @@ public class OrderRepository {
     public Integer unassignedOrdersCount() {
         return orders.size() - assignedOrders.size();
     }
+
+    public boolean deletePartnerById(String partnerId) {
+        if(partners.containsKey(partnerId)){
+            List<String> li = partners.get(partnerId);
+            partners.remove(partnerId);
+            partnerObj.remove(partnerId);
+            for(String oId: li){
+                assignedOrders.remove(oId);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteOrderById(String orderId) {
+        if(orders.containsKey(orderId)){
+            orders.remove(orderId);
+            if(assignedOrders.contains(orderId)){
+                assignedOrders.remove(orderId);
+                for(String prtnr: partners.keySet()){
+                    if(partners.get(prtnr).contains(orderId)){
+                        partners.get(prtnr).remove(orderId);
+                        partnerObj.get(prtnr).setNumberOfOrders(partnerObj.get(prtnr).getNumberOfOrders()-1);
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
+    }
 }
